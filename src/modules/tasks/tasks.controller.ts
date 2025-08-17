@@ -97,7 +97,7 @@ export class TasksController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Find a task by ID' })
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
     const task = await this.tasksService.findOne(id);
     
     if (!task) {
@@ -110,14 +110,14 @@ export class TasksController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update a task' })
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+  update(@Param('id', ParseUUIDPipe) id: string, @Body(ValidationPipe) updateTaskDto: UpdateTaskDto) {
     // No validation if task exists before update
     return this.tasksService.update(id, updateTaskDto);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a task' })
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     // No validation if task exists before removal
     // No status code returned for success
     return this.tasksService.remove(id);
